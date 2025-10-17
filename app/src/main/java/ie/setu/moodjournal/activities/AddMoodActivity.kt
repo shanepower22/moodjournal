@@ -1,5 +1,7 @@
 package ie.setu.moodjournal.activities
 
+import android.app.DatePickerDialog
+import android.icu.util.Calendar
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import ie.setu.moodjournal.databinding.ActivityAddmoodentryBinding
@@ -12,7 +14,7 @@ class AddMoodActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAddmoodentryBinding
     private lateinit var app : MainApp
     var moodEntry = MoodEntryModel()
-
+    private var selectedDate: LocalDate = LocalDate.now()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,14 +25,37 @@ class AddMoodActivity : AppCompatActivity() {
         app = application as MainApp
         i("Add Mood activity started")
 
+        binding.dateText.text = selectedDate.toString()
+        binding.dateText.setOnClickListener {
+            showDatePicker()
+        }
+
+
         binding.btnAdd.setOnClickListener {
             moodEntry.notes = binding.moodNotes.text.toString()
             moodEntry.moodColor = 0
-            moodEntry.date = LocalDate.now()
+            moodEntry.date = selectedDate
             app.moodEntries.add(moodEntry.copy())
 
             i("add Button Pressed: ${moodEntry}")
         }
+
+
     }
 
+
+    private fun showDatePicker() {
+        val calendar = Calendar.getInstance()
+        val datePicker = DatePickerDialog(
+            this,
+            { _, year, month, dayOfMonth ->
+                selectedDate = LocalDate.of(year, month + 1, dayOfMonth)
+                binding.dateText.text = selectedDate.toString()
+            },
+            calendar.get(Calendar.YEAR),
+            calendar.get(Calendar.MONTH),
+            calendar.get(Calendar.DAY_OF_MONTH)
+        )
+        datePicker.show()
+    }
 }
