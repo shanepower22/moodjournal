@@ -6,6 +6,7 @@ import ie.setu.moodjournal.databinding.ActivityAddmoodentryBinding
 import ie.setu.moodjournal.main.MainApp
 import ie.setu.moodjournal.models.MoodEntryModel
 import timber.log.Timber.i
+import java.time.LocalDate
 
 class AddMoodActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAddmoodentryBinding
@@ -23,7 +24,12 @@ class AddMoodActivity : AppCompatActivity() {
         i("Add Mood activity started")
 
         binding.btnAdd.setOnClickListener {
-            i("Add Button pressed")
+            moodEntry.notes = binding.moodNotes.text.toString()
+            moodEntry.moodColor = 0
+            moodEntry.date = LocalDate.now()
+            app.moodEntries.add(moodEntry.copy())
+
+            i("add Button Pressed: ${moodEntry}")
         }
     }
 
