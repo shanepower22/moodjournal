@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <color name="colorPrimary">#EDEDED</color>
+    <color name="colorPrimaryDark">#000000</color>
+    <color name="colorAccent">#A5D6A7</color>
+    <color name="colorButton">#00796B</color>
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="great">#2E7D32</color>
+    <color name="good">#81C784</color>
+    <color name="neutral">#898989</color>
+    <color name="bad">#E57373</color>
+    <color name="awful">#C62828</color>
 </resources>

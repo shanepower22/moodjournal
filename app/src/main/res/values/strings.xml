@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Mood Journal</string>
+    <string name="hint_moodNote">Add a note (optional)</string>
+    <string name="button_addMoodEntry">Add Mood Entry</string>
+    <string name="textBox_colorPicker">Select your current mood: </string>
+    <string name="date_selectDate">Select Date</string>
 </resources>

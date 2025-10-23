@@ -10,9 +10,10 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.MoodJournal">
+        android:theme="@style/Theme.MoodJournal"
+        android:name="ie.setu.moodjournal.main.MainApp">
         <activity
-            android:name=".MainActivity"
+            android:name=".activities.AddMoodActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
