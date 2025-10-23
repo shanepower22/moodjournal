@@ -2,6 +2,7 @@ package ie.setu.moodjournal.activities
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.Menu
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 
@@ -25,13 +26,18 @@ class MoodListActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMoodListBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        binding.toolbarAdd.title = title
+        setSupportActionBar(binding.toolbarAdd)
         app = application as MainApp
 
         val layoutManager = LinearLayoutManager(this)
         binding.recyclerView.layoutManager = layoutManager
         binding.recyclerView.adapter = MoodAdapter(app.moodEntries)
     }
-
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu_main, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
 
 }
 class MoodAdapter (private var moodEntries: List<MoodEntryModel>)
