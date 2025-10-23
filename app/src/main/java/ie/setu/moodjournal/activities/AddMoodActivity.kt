@@ -44,24 +44,23 @@ class AddMoodActivity : AppCompatActivity() {
             moodEntry.date = selectedDate
             val duplicate = app.moodEntries.any { it.date == selectedDate }
             if (duplicate) {
-                Snackbar.make(it,"Mood was already added for this date!", Snackbar.LENGTH_LONG).show()
+                Snackbar.make(it, "Mood was already added for this date!", Snackbar.LENGTH_LONG)
+                    .show()
                 i("Duplicated mood not added for date: ${selectedDate}")
-            }
-            else if (selectedDate > LocalDate.now()) {
-                Snackbar.make(it,"Cannot add a mood in the future!", Snackbar.LENGTH_LONG).show()
+            } else if (selectedDate > LocalDate.now()) {
+                Snackbar.make(it, "Cannot add a mood in the future!", Snackbar.LENGTH_LONG).show()
                 i("Mood not added, selected date ${selectedDate} is in the future")
-            }
-            else if (moodEntry.moodColor != 0) {
+            } else if (moodEntry.moodColor == 0) {
+                Snackbar.make(it, "Please Select Your Mood", Snackbar.LENGTH_LONG)
+                    .show()
+                i("Mood not added as mood color not selected:  ${moodEntry} ")
+
+            } else {
                 app.moodEntries.add(moodEntry.copy())
                 i("add Button Pressed: ${moodEntry}")
                 for (i in app.moodEntries.indices) {
                     i("Mood [$i]:${this.app.moodEntries[i]}")
                 }
-            }
-            else {
-                Snackbar.make(it,"Please Select Your Mood", Snackbar.LENGTH_LONG)
-                    .show()
-                i("Mood not added as mood color not selected:  ${moodEntry} ")
             }
         }
 
