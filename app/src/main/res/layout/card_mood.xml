@@ -43,6 +43,15 @@
                 tools:text="Great day today" />
 
             <TextView
+                android:id="@+id/moodLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:textStyle="italic"
+                android:textColor="@color/colorPrimaryDark"
+                tools:text="Feeling grateful" />
+
+            <TextView
                 android:id="@+id/moodDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

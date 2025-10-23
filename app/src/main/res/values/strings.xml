@@ -4,4 +4,6 @@
     <string name="button_addMoodEntry">Add Mood Entry</string>
     <string name="textBox_colorPicker">Select your current mood: </string>
     <string name="date_selectDate">Select Date</string>
+<!--    String placeholder for mood-->
+    <string name="moodColorLabel">Feeling %1$s</string>
 </resources>
