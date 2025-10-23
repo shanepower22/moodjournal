@@ -61,6 +61,8 @@ class AddMoodActivity : AppCompatActivity() {
                 for (i in app.moodEntries.indices) {
                     i("Mood [$i]:${this.app.moodEntries[i]}")
                 }
+                setResult(RESULT_OK)
+                finish()
             }
         }
 
