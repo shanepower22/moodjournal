@@ -41,12 +41,19 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/labelSelectMood"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/textBox_colorPicker">
+                    android:text="@string/textBox_colorPicker"
+                    android:textSize="22sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:gravity="center"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginBottom="8dp"
+                    android:padding="8dp" />
 
-                </TextView>
-
+'
                 <LinearLayout
                     android:id="@+id/moodRatingBar"
                     android:layout_width="match_parent"
@@ -117,7 +124,8 @@
                   android:layout_margin="8dp"
                   android:backgroundTint="@color/colorButton"
                   android:padding="8dp"
-                  android:text="@string/date_selectDate" >
+                  android:textSize="20sp"
+                android:text="@string/date_selectDate" >
 
               </Button>
 

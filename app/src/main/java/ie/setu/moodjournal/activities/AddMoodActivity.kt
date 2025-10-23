@@ -47,6 +47,10 @@ class AddMoodActivity : AppCompatActivity() {
                 Snackbar.make(it,"Mood was already added for this date!", Snackbar.LENGTH_LONG).show()
                 i("Duplicated mood not added for date: ${selectedDate}")
             }
+            else if (selectedDate > LocalDate.now()) {
+                Snackbar.make(it,"Cannot add a mood in the future!", Snackbar.LENGTH_LONG).show()
+                i("Mood not added, selected date ${selectedDate} is in the future")
+            }
             else if (moodEntry.moodColor != 0) {
                 app.moodEntries.add(moodEntry.copy())
                 i("add Button Pressed: ${moodEntry}")
