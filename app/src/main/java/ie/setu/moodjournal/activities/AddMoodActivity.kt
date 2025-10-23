@@ -6,6 +6,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import android.view.View
+import com.google.android.material.snackbar.Snackbar
 import ie.setu.moodjournal.R
 import ie.setu.moodjournal.databinding.ActivityAddmoodentryBinding
 import ie.setu.moodjournal.main.MainApp
@@ -41,12 +42,22 @@ class AddMoodActivity : AppCompatActivity() {
             moodEntry.moodColor = selectedColor
             moodEntry.moodLabel = selectedLabel
             moodEntry.date = selectedDate
-            if (moodEntry.moodColor != 0) {
+            val duplicate = app.moodEntries.any { it.date == selectedDate }
+            if (duplicate) {
+                Snackbar.make(it,"Mood was already added for this date!", Snackbar.LENGTH_LONG).show()
+                i("Duplicated mood not added for date: ${selectedDate}")
+            }
+            else if (moodEntry.moodColor != 0) {
                 app.moodEntries.add(moodEntry.copy())
                 i("add Button Pressed: ${moodEntry}")
                 for (i in app.moodEntries.indices) {
                     i("Mood [$i]:${this.app.moodEntries[i]}")
                 }
+            }
+            else {
+                Snackbar.make(it,"Please Select Your Mood", Snackbar.LENGTH_LONG)
+                    .show()
+                i("Mood not added as mood color not selected:  ${moodEntry} ")
             }
         }
 
