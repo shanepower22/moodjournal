@@ -5,6 +5,7 @@
     <string name="textBox_colorPicker">Select your current mood: </string>
     <string name="date_selectDate">Select Date</string>
     <string name="menu_addMoodEntry">Add</string>
+    <string name="menu_cancelMoodEntry">Cancel></string>
 <!--    String placeholder for mood-->
     <string name="moodColorLabel">Feeling %1$s</string>
 </resources>

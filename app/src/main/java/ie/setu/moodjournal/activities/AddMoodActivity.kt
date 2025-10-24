@@ -3,6 +3,7 @@ package ie.setu.moodjournal.activities
 import android.app.DatePickerDialog
 import android.icu.util.Calendar
 import android.os.Bundle
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import android.view.View
@@ -37,6 +38,10 @@ class AddMoodActivity : AppCompatActivity() {
         }
         setMoodColorListeners()
 
+        setSupportActionBar(binding.toolbarAdd)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowHomeEnabled(true)
+
         binding.btnAdd.setOnClickListener {
             moodEntry.notes = binding.moodNotes.text.toString()
             moodEntry.moodColor = selectedColor
@@ -68,6 +73,16 @@ class AddMoodActivity : AppCompatActivity() {
 
     }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> {
+                finish()
+                return true
+            }
+
+        }
+        return super.onOptionsItemSelected(item)
+    }
     private fun setMoodColorListeners() {
         val moodViews = listOf(
             binding.colorAwful,
