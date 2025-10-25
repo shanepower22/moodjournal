@@ -33,7 +33,7 @@ class MoodListActivity : AppCompatActivity() {
 
         val layoutManager = LinearLayoutManager(this)
         binding.recyclerView.layoutManager = layoutManager
-        binding.recyclerView.adapter = MoodAdapter(app.moodEntries)
+        binding.recyclerView.adapter = MoodAdapter(app.moodEntries.findAll())
     }
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
@@ -56,7 +56,7 @@ class MoodListActivity : AppCompatActivity() {
         ) {
             if (it.resultCode == Activity.RESULT_OK) {
                 (binding.recyclerView.adapter)?.
-                notifyItemRangeChanged(0,app.moodEntries.size)
+                notifyItemRangeChanged(0,app.moodEntries.findAll().size)
             }
         }
 

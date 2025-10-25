@@ -47,8 +47,8 @@ class AddMoodActivity : AppCompatActivity() {
             moodEntry.moodColor = selectedColor
             moodEntry.moodLabel = selectedLabel
             moodEntry.date = selectedDate
-            val duplicate = app.moodEntries.any { it.date == selectedDate }
-            if (duplicate) {
+            val duplicate = app.moodEntries.findAll().find { moodEntry -> moodEntry.date == selectedDate }
+            if (duplicate != null) {
                 Snackbar.make(it, "Mood was already added for this date!", Snackbar.LENGTH_LONG)
                     .show()
                 i("Duplicated mood not added for date: ${selectedDate}")
@@ -61,11 +61,9 @@ class AddMoodActivity : AppCompatActivity() {
                 i("Mood not added as mood color not selected:  ${moodEntry} ")
 
             } else {
-                app.moodEntries.add(moodEntry.copy())
+                app.moodEntries.create(moodEntry.copy())
                 i("add Button Pressed: ${moodEntry}")
-                for (i in app.moodEntries.indices) {
-                    i("Mood [$i]:${this.app.moodEntries[i]}")
-                }
+
                 setResult(RESULT_OK)
                 finish()
             }
