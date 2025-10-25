@@ -91,6 +91,8 @@ class MoodListActivity : AppCompatActivity(), MoodDropdownListener, AdapterView.
 
     override fun onDeleteClick(mood: MoodEntryModel) {
         app.moodEntries.delete(mood)
+        allMoods = app.moodEntries.findAll()
+        adapter.updateList(allMoods)
         adapter.notifyDataSetChanged()
         i("Deleted mood ${mood}")
     }
