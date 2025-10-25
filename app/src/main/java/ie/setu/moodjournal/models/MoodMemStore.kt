@@ -16,6 +16,7 @@ class MoodMemStore : MoodStore {
     }
 
     override fun create(moodEntry: MoodEntryModel) {
+        moodEntry.id = getId()
         moodEntries.add(moodEntry)
         logAll()
     }
@@ -27,6 +28,7 @@ class MoodMemStore : MoodStore {
             foundMood.moodColor = moodEntry.moodColor
             foundMood.date = moodEntry.date
             foundMood.moodLabel = moodEntry.moodLabel
+
             logAll()
         }
     }

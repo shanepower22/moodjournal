@@ -16,8 +16,6 @@ class MainApp : Application() {
         super.onCreate()
         Timber.plant(Timber.DebugTree())
         i("Mood Entry App started")
-        moodEntries.create(MoodEntryModel("#2E7D32".toColorInt(), "great", "Passed exam", LocalDate.now()))
-        moodEntries.create(MoodEntryModel("#C62828".toColorInt(), "awful", "Car crash", LocalDate.of(2025, 10,20)))
 
     }
 }

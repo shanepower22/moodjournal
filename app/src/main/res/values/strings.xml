@@ -9,6 +9,9 @@
     <string name="list_moodOptions">Mood Options</string>
     <string name="menu_moodEdit">Mood Edit</string>
     <string name="menu_moodDelete">Mood Delete</string>
+    <string name="mood_not_selected">Please select your mood</string>
+    <string name="mood_duplicated_date">Mood was already added for this date!</string>
+    <string name="mood_future_date">Cannot add a mood in the future!</string>
 <!--    String placeholder for mood-->
     <string name="moodColorLabel">Feeling %1$s</string>
 </resources>
