@@ -19,6 +19,7 @@ class AddMoodActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAddmoodentryBinding
     private lateinit var app: MainApp
     var moodEntry = MoodEntryModel()
+
     private var selectedDate: LocalDate = LocalDate.now()
     private var selectedColor: Int = 0
     private var selectedLabel: String = ""
@@ -70,7 +71,7 @@ class AddMoodActivity : AppCompatActivity() {
 
             } else {
                 if (edit) {
-                    app.moodEntries.update(moodEntry.copy())
+                    app.moodEntries.update(moodEntry)
                     i("Edit Button Pressed: ${moodEntry}")
                     setResult(RESULT_OK)
                     finish()
@@ -83,7 +84,7 @@ class AddMoodActivity : AppCompatActivity() {
                             .show()
                         i("Duplicated mood not added for date: ${selectedDate}")
                     } else {
-                        app.moodEntries.create(moodEntry.copy())
+                        app.moodEntries.create(moodEntry)
                         i("Add Button Pressed: ${moodEntry}")
                         setResult(RESULT_OK)
                         finish()

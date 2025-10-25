@@ -11,11 +11,14 @@ import ie.setu.moodjournal.models.MoodMemStore
 
 class MainApp : Application() {
 
-    val moodEntries = MoodMemStore()
+    lateinit var moodEntries: MoodMemStore
+
     override fun onCreate() {
         super.onCreate()
+        moodEntries = MoodMemStore(this)
         Timber.plant(Timber.DebugTree())
         i("Mood Entry App started")
+
 
     }
 }
