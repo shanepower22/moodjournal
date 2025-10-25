@@ -22,7 +22,8 @@ import ie.setu.moodjournal.databinding.ActivityMoodListBinding
 import ie.setu.moodjournal.models.MoodEntryModel
 import timber.log.Timber.i
 
-class MoodListActivity : AppCompatActivity(), MoodDropdownListener, AdapterView.OnItemSelectedListener {
+class MoodListActivity : AppCompatActivity(), MoodDropdownListener,
+    AdapterView.OnItemSelectedListener {
 
 
     private lateinit var app: MainApp
@@ -32,6 +33,9 @@ class MoodListActivity : AppCompatActivity(), MoodDropdownListener, AdapterView.
     private lateinit var adapter: MoodAdapter
 
     private lateinit var allMoods: List<MoodEntryModel>
+
+    private var currentFilter: String = "All"
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,6 +65,7 @@ class MoodListActivity : AppCompatActivity(), MoodDropdownListener, AdapterView.
                 moodResultLaunch.launch(intent)
                 i("Add / edit mood button pressed")
             }
+
             R.id.item_filter -> {
                 showFilterPopup(findViewById(R.id.item_filter))
                 i("Filter button pressed")
@@ -93,7 +98,7 @@ class MoodListActivity : AppCompatActivity(), MoodDropdownListener, AdapterView.
         app.moodEntries.delete(mood)
         allMoods = app.moodEntries.findAll()
         adapter.updateList(allMoods)
-        adapter.notifyDataSetChanged()
+        filterMoods(currentFilter)
         i("Deleted mood ${mood}")
     }
 
@@ -101,8 +106,9 @@ class MoodListActivity : AppCompatActivity(), MoodDropdownListener, AdapterView.
     private val moodResultLaunch =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
-                adapter.notifyDataSetChanged()
-                i("Mood list refreshed after add / edit")
+                allMoods = app.moodEntries.findAll()
+                filterMoods(currentFilter)
+                    i("Mood list refreshed after add / edit")
             }
         }
 
@@ -117,7 +123,9 @@ class MoodListActivity : AppCompatActivity(), MoodDropdownListener, AdapterView.
         filterMoods("All")
     }
 
+
     private fun filterMoods(label: String) {
+        currentFilter = label
         val filtered = if (label == "All") {
             allMoods
         } else {
