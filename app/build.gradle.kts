@@ -1,9 +1,10 @@
-plugins {
+    plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     id("kotlin-parcelize")
-
-}
+    id("kotlinx-serialization")
+        kotlin("plugin.serialization")
+    }
 
 android {
     namespace = "ie.setu.moodjournal"
@@ -52,4 +53,5 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
 }
