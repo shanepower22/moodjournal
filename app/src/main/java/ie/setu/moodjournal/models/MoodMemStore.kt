@@ -25,6 +25,12 @@ class MoodMemStore(private val context: Context) : MoodStore {
     }
 
     override fun create(moodEntry: MoodEntryModel) {
+        require(moodEntry.validate()) {
+            "Invalid mood entry data: $moodEntry"
+        }
+        if (moodEntries.any { it.date == moodEntry.date }) {
+            throw IllegalStateException("Duplicate mood entry for date: ${moodEntry.date}")
+        }
         moodEntry.id = getId()
         moodEntries.add(moodEntry)
         logAll()
@@ -32,6 +38,11 @@ class MoodMemStore(private val context: Context) : MoodStore {
     }
 
     override fun update(moodEntry: MoodEntryModel) {
+        require(moodEntry.validate()) {
+            "Invalid mood entry data: $moodEntry"
+        }
+
+
         var foundMood: MoodEntryModel? = moodEntries.find { m -> m.id == moodEntry.id }
         if (foundMood != null) {
             foundMood.notes = moodEntry.notes
