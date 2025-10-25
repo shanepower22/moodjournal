@@ -64,6 +64,7 @@ class MoodListActivity : AppCompatActivity(), MoodListener {
         }
     override fun onMoodClick(mood: MoodEntryModel) {
         val launcherIntent = Intent(this, AddMoodActivity::class.java)
+        launcherIntent.putExtra("mood_edit", mood)
         getClickResult.launch(launcherIntent)
     }
 

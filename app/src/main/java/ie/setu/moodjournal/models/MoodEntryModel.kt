@@ -6,6 +6,7 @@ import java.time.LocalDate
 
 @Parcelize
 data class MoodEntryModel(
+    var id: Long = 0,
     var moodColor: Int = 0,
     var moodLabel: String = "",
     var notes: String = "",

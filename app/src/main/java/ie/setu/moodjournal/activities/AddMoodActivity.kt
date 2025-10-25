@@ -42,6 +42,13 @@ class AddMoodActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
 
+        if (intent.hasExtra("mood_edit")) {
+            moodEntry = intent.extras?.getParcelable("mood_edit")!!
+            binding.moodNotes.setText(moodEntry.notes)
+            binding.dateText.setText(moodEntry.date.toString())
+
+        }
+
         binding.btnAdd.setOnClickListener {
             moodEntry.notes = binding.moodNotes.text.toString()
             moodEntry.moodColor = selectedColor
