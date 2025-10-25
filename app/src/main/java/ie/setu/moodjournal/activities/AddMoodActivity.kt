@@ -32,10 +32,10 @@ class AddMoodActivity : AppCompatActivity() {
 
         app = application as MainApp
         i("Add Mood activity started")
-
+        // set text for initial date
         binding.dateText.text = selectedDate.toString()
         binding.dateText.setOnClickListener {
-            showDatePicker()
+            showDatePicker() //show date picker when clicked
         }
         setMoodColorListeners()
 
@@ -43,6 +43,7 @@ class AddMoodActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
 
+        //check if editing and populate the fields if so
         if (intent.hasExtra("mood_edit")) {
             edit = true
             moodEntry = intent.extras?.getParcelable("mood_edit")!!
@@ -55,6 +56,7 @@ class AddMoodActivity : AppCompatActivity() {
 
         }
 
+        //when add or edit button pressed
         binding.btnAdd.setOnClickListener {
             moodEntry.notes = binding.moodNotes.text.toString()
             moodEntry.moodColor = selectedColor
@@ -96,11 +98,11 @@ class AddMoodActivity : AppCompatActivity() {
     }
 
 
-
+//toolbar back button
 override fun onOptionsItemSelected(item: MenuItem): Boolean {
     when (item.itemId) {
         android.R.id.home -> {
-            finish()
+            finish() //close add activity
             return true
         }
 
@@ -108,6 +110,7 @@ override fun onOptionsItemSelected(item: MenuItem): Boolean {
     return super.onOptionsItemSelected(item)
 }
 
+    //listeners for color options
 private fun setMoodColorListeners() {
     val moodViews = listOf(
         binding.colorAwful,
