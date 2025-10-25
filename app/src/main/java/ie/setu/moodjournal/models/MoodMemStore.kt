@@ -44,6 +44,8 @@ class MoodMemStore(private val context: Context) : MoodStore {
         }
     }
 
+
+
     override fun delete(moodEntry: MoodEntryModel) {
         moodEntries.removeIf { it.id == moodEntry.id }
         i("Deleted mood entry: $moodEntry")

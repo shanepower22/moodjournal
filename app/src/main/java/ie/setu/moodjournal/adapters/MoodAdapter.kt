@@ -13,7 +13,7 @@ interface MoodDropdownListener { //AI was used here to help implement the popup 
     fun onDeleteClick(mood: MoodEntryModel)
 }
 
-class MoodAdapter (private var moodEntries: List<MoodEntryModel>,
+class MoodAdapter (private var moodEntries: MutableList<MoodEntryModel>,
     private val listener: MoodDropdownListener)
     : RecyclerView.Adapter<MoodAdapter.MainHolder>() {
 
@@ -30,6 +30,11 @@ class MoodAdapter (private var moodEntries: List<MoodEntryModel>,
 
     override fun getItemCount(): Int = moodEntries.size
 
+    fun updateList(newList: List<MoodEntryModel>) {
+        this.moodEntries.clear()
+        this.moodEntries.addAll(newList)
+        notifyDataSetChanged()
+    }
     class MainHolder(
         private val binding: CardMoodBinding,
     ) :
