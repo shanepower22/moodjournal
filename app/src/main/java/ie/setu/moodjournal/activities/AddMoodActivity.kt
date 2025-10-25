@@ -72,6 +72,8 @@ class AddMoodActivity : AppCompatActivity() {
                 if (edit) {
                     app.moodEntries.update(moodEntry.copy())
                     i("Edit Button Pressed: ${moodEntry}")
+                    setResult(RESULT_OK)
+                    finish()
                 } else {
                     val duplicate =
                         app.moodEntries.findAll()
@@ -83,10 +85,11 @@ class AddMoodActivity : AppCompatActivity() {
                     } else {
                         app.moodEntries.create(moodEntry.copy())
                         i("Add Button Pressed: ${moodEntry}")
+                        setResult(RESULT_OK)
+                        finish()
                     }
                 }
-                setResult(RESULT_OK)
-                finish()
+
             }
         }
     }
