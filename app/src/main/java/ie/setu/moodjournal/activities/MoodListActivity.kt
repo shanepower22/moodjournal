@@ -1,6 +1,7 @@
 package ie.setu.moodjournal.activities
 
 import MoodAdapter
+import MoodListener
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
@@ -13,9 +14,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import ie.setu.moodjournal.R
 import ie.setu.moodjournal.main.MainApp
 import ie.setu.moodjournal.databinding.ActivityMoodListBinding
+import ie.setu.moodjournal.models.MoodEntryModel
 import timber.log.Timber.i
 
-class MoodListActivity : AppCompatActivity() {
+class MoodListActivity : AppCompatActivity(), MoodListener {
 
 
     private lateinit var app: MainApp
@@ -33,7 +35,8 @@ class MoodListActivity : AppCompatActivity() {
 
         val layoutManager = LinearLayoutManager(this)
         binding.recyclerView.layoutManager = layoutManager
-        binding.recyclerView.adapter = MoodAdapter(app.moodEntries.findAll())
+        binding.recyclerView.adapter = MoodAdapter(app.moodEntries.findAll(),this)
+        MoodAdapter(app.moodEntries.findAll(),this)
     }
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
@@ -54,10 +57,23 @@ class MoodListActivity : AppCompatActivity() {
         registerForActivityResult(
             ActivityResultContracts.StartActivityForResult()
         ) {
-            if (it.resultCode == Activity.RESULT_OK) {
+            if (it.resultCode == RESULT_OK) {
                 (binding.recyclerView.adapter)?.
                 notifyItemRangeChanged(0,app.moodEntries.findAll().size)
             }
         }
+    override fun onMoodClick(mood: MoodEntryModel) {
+        val launcherIntent = Intent(this, AddMoodActivity::class.java)
+        getClickResult.launch(launcherIntent)
+    }
 
+    private val getClickResult =
+        registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult()
+        ) {
+            if (it.resultCode == RESULT_OK) {
+                (binding.recyclerView.adapter)?.
+                notifyItemRangeChanged(0,app.moodEntries.findAll().size)
+            }
+        }
 }

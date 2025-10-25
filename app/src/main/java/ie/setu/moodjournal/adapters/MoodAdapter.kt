@@ -5,8 +5,12 @@ import ie.setu.moodjournal.R
 import ie.setu.moodjournal.databinding.CardMoodBinding
 import ie.setu.moodjournal.models.MoodEntryModel
 
+interface MoodListener {
+    fun onMoodClick(mood: MoodEntryModel)
+}
 
-class MoodAdapter (private var moodEntries: List<MoodEntryModel>)
+class MoodAdapter (private var moodEntries: List<MoodEntryModel>,
+    private val listener: MoodListener)
     : RecyclerView.Adapter<MoodAdapter.MainHolder>(){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainHolder {
@@ -17,7 +21,7 @@ class MoodAdapter (private var moodEntries: List<MoodEntryModel>)
 
     override fun onBindViewHolder(holder: MainHolder, position: Int) {
         val mood = moodEntries[holder.adapterPosition]
-        holder.bind(mood)
+        holder.bind(mood, listener)
     }
 
     override fun getItemCount(): Int = moodEntries.size
@@ -25,7 +29,7 @@ class MoodAdapter (private var moodEntries: List<MoodEntryModel>)
     class MainHolder(private val binding: CardMoodBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(mood: MoodEntryModel) {
+        fun bind(mood: MoodEntryModel, listener: MoodListener) {
             binding.moodLabel.text = binding.root.context.getString(
                 R.string.moodColorLabel,
                 mood.moodLabel
@@ -33,6 +37,7 @@ class MoodAdapter (private var moodEntries: List<MoodEntryModel>)
             binding.moodColorIndicator.setBackgroundColor(mood.moodColor)
             binding.moodNotes.text = mood.notes
             binding.moodDate.text = mood.date.toString()
+            binding.root.setOnClickListener {listener.onMoodClick((mood))}
         }
     }
 }
