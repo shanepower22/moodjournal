@@ -9,9 +9,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.AdapterView
-import android.widget.ArrayAdapter
 import android.widget.PopupMenu
-import android.widget.Spinner
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 
@@ -108,7 +106,7 @@ class MoodListActivity : AppCompatActivity(), MoodDropdownListener,
             if (result.resultCode == Activity.RESULT_OK) {
                 allMoods = app.moodEntries.findAll()
                 filterMoods(currentFilter)
-                    i("Mood list refreshed after add / edit")
+                i("Mood list refreshed after add / edit")
             }
         }
 

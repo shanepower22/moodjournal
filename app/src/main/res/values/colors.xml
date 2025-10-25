@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#EDEDED</color>
+    <color name="colorPrimary">#FFFFFF</color>
     <color name="colorPrimaryDark">#000000</color>
-    <color name="colorAccent">#43A047</color>
+    <color name="colorAccent">#8BC34A</color>
     <color name="colorButton">#00796B</color>
     <color name="white">#FFFFFF</color>
-    <color name="grey">#333333</color>
+    <color name="grey">#212121</color>
     <color name="black">#000000</color>
     <color name="great">#2E7D32</color>
     <color name="good">#81C784</color>
-    <color name="neutral">#898989</color>
+    <color name="neutral">#9E9E9E</color>
     <color name="bad">#E57373</color>
     <color name="awful">#C62828</color>
 </resources>
