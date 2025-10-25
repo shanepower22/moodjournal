@@ -1,7 +1,7 @@
 package ie.setu.moodjournal.activities
 
 import MoodAdapter
-import MoodListener
+import MoodDropdownListener
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
@@ -17,13 +17,14 @@ import ie.setu.moodjournal.databinding.ActivityMoodListBinding
 import ie.setu.moodjournal.models.MoodEntryModel
 import timber.log.Timber.i
 
-class MoodListActivity : AppCompatActivity(), MoodListener {
+class MoodListActivity : AppCompatActivity(), MoodDropdownListener {
 
 
     private lateinit var app: MainApp
 
     private lateinit var binding: ActivityMoodListBinding
 
+    private lateinit var adapter: MoodAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,46 +36,47 @@ class MoodListActivity : AppCompatActivity(), MoodListener {
 
         val layoutManager = LinearLayoutManager(this)
         binding.recyclerView.layoutManager = layoutManager
-        binding.recyclerView.adapter = MoodAdapter(app.moodEntries.findAll(),this)
-        MoodAdapter(app.moodEntries.findAll(),this)
+        adapter = MoodAdapter(app.moodEntries.findAll(), this)
+        binding.recyclerView.adapter = adapter
     }
+
+
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
         return super.onCreateOptionsMenu(menu)
     }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.item_add -> {
-                val launcherIntent = Intent(this, AddMoodActivity::class.java)
-                getResult.launch(launcherIntent)
-                i("Add mood button pressed")
+                val intent = Intent(this, AddMoodActivity::class.java)
+                moodResultLaunch.launch(intent)
+                i("Add / edit mood button pressed")
             }
         }
         return super.onOptionsItemSelected(item)
     }
 
-    private val getResult =
-        registerForActivityResult(
-            ActivityResultContracts.StartActivityForResult()
-        ) {
-            if (it.resultCode == RESULT_OK) {
-                (binding.recyclerView.adapter)?.
-                notifyItemRangeChanged(0,app.moodEntries.findAll().size)
-            }
-        }
-    override fun onMoodClick(mood: MoodEntryModel) {
-        val launcherIntent = Intent(this, AddMoodActivity::class.java)
-        launcherIntent.putExtra("mood_edit", mood)
-        getClickResult.launch(launcherIntent)
+    override fun onEditClick(mood: MoodEntryModel) {
+        val intent = Intent(this, AddMoodActivity::class.java)
+        intent.putExtra("mood_edit", mood)
+        moodResultLaunch.launch(intent)
     }
 
-    private val getClickResult =
-        registerForActivityResult(
-            ActivityResultContracts.StartActivityForResult()
-        ) {
-            if (it.resultCode == RESULT_OK) {
-                (binding.recyclerView.adapter)?.
-                notifyItemRangeChanged(0,app.moodEntries.findAll().size)
+    override fun onDeleteClick(mood: MoodEntryModel) {
+        app.moodEntries.delete(mood)
+        adapter.notifyDataSetChanged()
+        i("Deleted mood ${mood}")
+    }
+
+
+    private val moodResultLaunch =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                adapter.notifyDataSetChanged()
+                i("Mood list refreshed after add / edit")
             }
         }
 }
+
+

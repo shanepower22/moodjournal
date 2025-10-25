@@ -33,6 +33,12 @@ class MoodMemStore : MoodStore {
         }
     }
 
+    override fun delete(moodEntry: MoodEntryModel) {
+        moodEntries.removeIf { it.id == moodEntry.id }
+        i("Deleted mood entry: $moodEntry")
+        logAll()
+        }
+
     fun logAll() {
         moodEntries.forEach{ i("$it") }
     }

@@ -6,4 +6,6 @@ interface MoodStore {
     fun create(moodEntry: MoodEntryModel)
 
     fun update(moodEntry: MoodEntryModel)
+
+    fun delete(moodEntry: MoodEntryModel)
 }
