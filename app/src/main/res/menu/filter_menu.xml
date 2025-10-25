@@ -1,0 +1,8 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/filter_all" android:title="All" />
+    <item android:id="@+id/filter_awful" android:title="Awful" />
+    <item android:id="@+id/filter_bad" android:title="Bad" />
+    <item android:id="@+id/filter_neutral" android:title="Neutral" />
+    <item android:id="@+id/filter_good" android:title="Good" />
+    <item android:id="@+id/filter_great" android:title="Great" />
+</menu>

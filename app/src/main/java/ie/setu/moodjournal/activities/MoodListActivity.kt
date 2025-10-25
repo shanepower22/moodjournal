@@ -10,6 +10,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.PopupMenu
 import android.widget.Spinner
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -45,7 +46,6 @@ class MoodListActivity : AppCompatActivity(), MoodDropdownListener, AdapterView.
         adapter = MoodAdapter(app.moodEntries.findAll().toMutableList(), this)
         binding.recyclerView.adapter = adapter
         allMoods = app.moodEntries.findAll()
-        setupFilterSpinner()
     }
 
 
@@ -61,8 +61,26 @@ class MoodListActivity : AppCompatActivity(), MoodDropdownListener, AdapterView.
                 moodResultLaunch.launch(intent)
                 i("Add / edit mood button pressed")
             }
+            R.id.item_filter -> {
+                showFilterPopup(findViewById(R.id.item_filter))
+                i("Filter button pressed")
+            }
         }
+
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun showFilterPopup(view: View) {
+        val popup = PopupMenu(this, view)
+        popup.menuInflater.inflate(R.menu.filter_menu, popup.menu)
+
+        popup.setOnMenuItemClickListener { menuItem ->
+            val selectedLabel = menuItem.title.toString()
+            filterMoods(selectedLabel)
+            true
+        }
+
+        popup.show()
     }
 
     override fun onEditClick(mood: MoodEntryModel) {
@@ -86,24 +104,6 @@ class MoodListActivity : AppCompatActivity(), MoodDropdownListener, AdapterView.
             }
         }
 
-    //source for spinner implementation: https://developer.android.com/develop/ui/views/components/spinner#kotlin
-    private fun setupFilterSpinner() {
-        val spinner: Spinner = binding.moodFilterSpinner
-        ArrayAdapter.createFromResource(
-            this,
-            R.array.moodLabelsSpinner,
-            android.R.layout.simple_spinner_item
-        )
-
-        .also { adapter ->
-            // Specify the layout to use when the list of choices appears.
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            // Apply the adapter to the spinner.
-            spinner.adapter = adapter
-        }
-
-        spinner.onItemSelectedListener = this
-    }
 
     override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
         val selectedLabel = parent.getItemAtPosition(position).toString()

@@ -12,14 +12,9 @@
     <string name="mood_not_selected">Please select your mood</string>
     <string name="mood_duplicated_date">Mood was already added for this date!</string>
     <string name="mood_future_date">Cannot add a mood in the future!</string>
-    <string-array name="moodLabelsSpinner">
-        <item>Awful</item>
-        <item>Bad</item>
-        <item>Neutral</item>
-        <item>Good</item>
-        <item>Great</item>
-        <item>All</item>
-    </string-array>
+
+
+    <string name="mood_filter">Mood Filter</string>
 <!--    String placeholder for mood-->
     <string name="moodColorLabel">Feeling %1$s</string>
 </resources>
