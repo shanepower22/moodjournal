@@ -18,5 +18,5 @@
     <string name="mood_filter">Mood Filter</string>
     <!--    String placeholder for mood-->
     <string name="moodColorLabel">Feeling %1$s</string>
-    <string name="title_activity_map">MapActivity</string>
+    <string name="title_activity_map">Map of Mood Entries</string>
 </resources>
