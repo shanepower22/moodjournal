@@ -1,12 +1,15 @@
 package ie.setu.moodjournal.activities
 
 import android.app.DatePickerDialog
+import android.content.Intent
 import android.icu.util.Calendar
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import android.view.View
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import com.google.android.material.snackbar.Snackbar
 import ie.setu.moodjournal.R
 import ie.setu.moodjournal.databinding.ActivityAddmoodentryBinding
@@ -18,11 +21,19 @@ import java.time.LocalDate
 class AddMoodActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAddmoodentryBinding
     private lateinit var app: MainApp
+    private lateinit var mapIntentLauncher : ActivityResultLauncher<Intent>
+    private fun registerMapCallback() {
+        mapIntentLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult())
+            { i("Map Loaded") }
+    }
+
     var moodEntry = MoodEntryModel()
 
     private var selectedDate: LocalDate = LocalDate.now()
     private var selectedColor: Int = 0
     private var selectedLabel: String = ""
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,6 +43,7 @@ class AddMoodActivity : AppCompatActivity() {
 
         app = application as MainApp
         i("Add Mood activity started")
+        registerMapCallback()
         // set text for initial date
         binding.dateText.text = selectedDate.toString()
         binding.dateText.setOnClickListener {
@@ -42,6 +54,7 @@ class AddMoodActivity : AppCompatActivity() {
         setSupportActionBar(binding.toolbarAdd)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
+
 
         //check if editing and populate the fields if so
         if (intent.hasExtra("mood_edit")) {
@@ -54,6 +67,12 @@ class AddMoodActivity : AppCompatActivity() {
             selectedColor = moodEntry.moodColor
             selectedLabel = moodEntry.moodLabel
 
+        }
+
+        binding.moodLocation.setOnClickListener {
+            i("Set Location Pressed")
+            val launcherIntent = Intent(this, MapActivity::class.java)
+            mapIntentLauncher.launch(launcherIntent)
         }
 
         //when add or edit button pressed
