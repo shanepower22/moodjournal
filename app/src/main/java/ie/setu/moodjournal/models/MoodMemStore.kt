@@ -49,6 +49,10 @@ class MoodMemStore(private val context: Context) : MoodStore {
             foundMood.moodColor = moodEntry.moodColor
             foundMood.date = moodEntry.date
             foundMood.moodLabel = moodEntry.moodLabel
+            foundMood.lat = moodEntry.lat
+            foundMood.lng = moodEntry.lng
+            foundMood.zoom = moodEntry.zoom
+
 
             logAll()
             save()

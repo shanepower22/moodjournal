@@ -83,6 +83,8 @@ class AddMoodActivity : AppCompatActivity() {
             selectedDate = moodEntry.date
             selectedColor = moodEntry.moodColor
             selectedLabel = moodEntry.moodLabel
+            location = Location(moodEntry.lat, moodEntry.lng, moodEntry.zoom)
+
 
         }
 
@@ -100,6 +102,10 @@ class AddMoodActivity : AppCompatActivity() {
             moodEntry.moodColor = selectedColor
             moodEntry.moodLabel = selectedLabel
             moodEntry.date = selectedDate
+            moodEntry.lat = location.lat
+            moodEntry.lng = location.lng
+            moodEntry.zoom = location.zoom
+
 
             if (selectedDate > LocalDate.now()) {
                 Snackbar.make(it, R.string.mood_future_date, Snackbar.LENGTH_LONG).show()
