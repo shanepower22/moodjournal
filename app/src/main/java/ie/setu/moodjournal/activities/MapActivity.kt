@@ -64,6 +64,11 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback,  GoogleMap.OnMarker
         location.lat = marker.position.latitude
         location.lng = marker.position.longitude
         location.zoom = map.cameraPosition.zoom
+
+        val newSnippet = "GPS : ${LatLng(location.lat, location.lng)}"
+        marker.snippet = newSnippet
+        marker.showInfoWindow()
+
     }
 
     override fun onMarkerDragStart(p0: Marker) {
