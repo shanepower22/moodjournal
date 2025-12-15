@@ -13,7 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MoodJournal">
         <activity
-            android:name=".activities.MoodMapActivity"
+            android:name=".activities.MoodMapsActivity"
             android:exported="false"
             android:theme="@style/Theme.MoodJournal" />
 

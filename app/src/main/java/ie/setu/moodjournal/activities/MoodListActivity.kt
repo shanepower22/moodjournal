@@ -8,9 +8,7 @@
     import android.view.Menu
     import android.view.MenuItem
     import android.view.View
-    import android.widget.AdapterView
     import android.widget.PopupMenu
-    import androidx.activity.result.ActivityResultLauncher
     import androidx.activity.result.contract.ActivityResultContracts
     import androidx.appcompat.app.AppCompatActivity
 
@@ -70,7 +68,7 @@
                     i("Add / edit mood button pressed")
                 }
                 R.id.item_map -> {
-                    val launcherIntent = Intent(this, MoodMapActivity::class.java)
+                    val launcherIntent = Intent(this, MoodMapsActivity::class.java)
                     mapIntentLauncher.launch(launcherIntent)
                 }
 
