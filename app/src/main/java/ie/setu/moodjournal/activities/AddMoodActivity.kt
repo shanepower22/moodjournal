@@ -1,5 +1,6 @@
 package ie.setu.moodjournal.activities
 
+import android.app.Activity
 import android.app.DatePickerDialog
 import android.content.Intent
 import android.icu.util.Calendar
@@ -8,12 +9,14 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import android.view.View
+import androidx.activity.addCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import com.google.android.material.snackbar.Snackbar
 import ie.setu.moodjournal.R
 import ie.setu.moodjournal.databinding.ActivityAddmoodentryBinding
 import ie.setu.moodjournal.main.MainApp
+import ie.setu.moodjournal.models.Location
 import ie.setu.moodjournal.models.MoodEntryModel
 import timber.log.Timber.i
 import java.time.LocalDate
@@ -25,8 +28,22 @@ class AddMoodActivity : AppCompatActivity() {
     private fun registerMapCallback() {
         mapIntentLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult())
-            { i("Map Loaded") }
+            { result ->
+                when (result.resultCode) {
+                    RESULT_OK -> {
+                        if (result.data != null) {
+                            i("Got Location ${result.data.toString()}")
+                            //location = result.data!!.extras?.getParcelable("location",Location::class.java)!!
+                            location = result.data!!.extras?.getParcelable("location")!!
+                            i("Location == $location")
+                        } // end of if
+                    }
+                    RESULT_CANCELED -> { } else -> { }
+                }
+            }
     }
+
+    var location = Location(52.245696, -7.139102, 15f)
 
     var moodEntry = MoodEntryModel()
 
@@ -69,9 +86,11 @@ class AddMoodActivity : AppCompatActivity() {
 
         }
 
+        //when set location pressed
         binding.moodLocation.setOnClickListener {
             i("Set Location Pressed")
             val launcherIntent = Intent(this, MapActivity::class.java)
+                .putExtra("location", location)
             mapIntentLauncher.launch(launcherIntent)
         }
 
