@@ -26,7 +26,7 @@
                 android:layout_width="145dp"
                 android:layout_height="35dp"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="32dp"
+                android:layout_marginTop="16dp"
                 android:text="TextView"
                 android:textColor="@color/black"
                 android:textSize="16sp"
@@ -44,6 +44,18 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/currentTitle"
                 app:layout_constraintVertical_bias="0.148" />
+
+            <TextView
+                android:id="@+id/currentDate"
+                android:layout_width="145dp"
+                android:layout_height="30dp"
+                android:layout_marginStart="16dp"
+                android:text="TextView"
+                android:textColor="@color/black"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/currentTitle"
+                app:layout_constraintVertical_bias="0.787" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 

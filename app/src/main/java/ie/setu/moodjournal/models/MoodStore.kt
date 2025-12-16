@@ -8,4 +8,6 @@ interface MoodStore {
     fun update(moodEntry: MoodEntryModel)
 
     fun delete(moodEntry: MoodEntryModel)
+
+    fun findById(id:Long) : MoodEntryModel?
 }

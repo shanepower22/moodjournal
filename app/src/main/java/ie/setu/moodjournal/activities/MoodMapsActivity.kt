@@ -20,12 +20,12 @@ class MoodMapsActivity : AppCompatActivity(), GoogleMap.OnMarkerClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        app = application as MainApp
         binding = ActivityMoodMapBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         setSupportActionBar(binding.toolbar)
-        contentBinding = ContentMoodMapBinding.bind(binding.root)
+        app = application as MainApp
+
+        contentBinding = binding.include
         contentBinding.mapView.onCreate(savedInstanceState)
         contentBinding.mapView.getMapAsync {
             map = it
@@ -34,8 +34,12 @@ class MoodMapsActivity : AppCompatActivity(), GoogleMap.OnMarkerClickListener {
     }
 
     override fun onMarkerClick(marker: Marker): Boolean {
-        contentBinding.currentTitle.text = marker.title
-
+        val tag = marker.tag as Long
+        val moodEntry = app.moodEntries.findById(tag)
+        contentBinding.currentTitle.text = moodEntry!!.moodLabel
+        contentBinding.currentDescription.text = moodEntry.notes
+        contentBinding.currentDate.text = moodEntry.date.toString()
+//        Picasso.get().load(placemark.image).into(contentBinding.currentImage)
         return false
     }
 
@@ -47,6 +51,7 @@ class MoodMapsActivity : AppCompatActivity(), GoogleMap.OnMarkerClickListener {
             map.addMarker(options)?.tag = it.id
             map.moveCamera(CameraUpdateFactory.newLatLngZoom(loc, it.zoom))
             map.setOnMarkerClickListener(this)
+
         }
     }
 

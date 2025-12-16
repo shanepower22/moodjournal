@@ -68,6 +68,11 @@ class MoodMemStore(private val context: Context) : MoodStore {
         save()
         }
 
+    override fun findById(id:Long) : MoodEntryModel? {
+        val foundMoodEntry: MoodEntryModel? = moodEntries.find { it.id == id }
+        return foundMoodEntry
+    }
+
     fun logAll() {
         moodEntries.forEach{ i("$it") }
     }
@@ -85,6 +90,7 @@ class MoodMemStore(private val context: Context) : MoodStore {
         if (file.exists()) {
             val jsonString = file.readText()
             moodEntries.addAll(Json.decodeFromString(jsonString))
+            lastId = (moodEntries.maxOfOrNull { it.id } ?: 0L) + 1
             i("Moods loaded from JSON")
         }
     }
