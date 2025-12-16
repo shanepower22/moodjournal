@@ -15,6 +15,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import com.google.android.material.snackbar.Snackbar
 import ie.setu.moodjournal.R
 import ie.setu.moodjournal.databinding.ActivityAddmoodentryBinding
+import ie.setu.moodjournal.helpers.showImagePicker
 import ie.setu.moodjournal.main.MainApp
 import ie.setu.moodjournal.models.Location
 import ie.setu.moodjournal.models.MoodEntryModel
@@ -51,16 +52,24 @@ class AddMoodActivity : AppCompatActivity() {
     private var selectedColor: Int = 0
     private var selectedLabel: String = ""
 
+    private lateinit var imageIntentLauncher : ActivityResultLauncher<Intent>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAddmoodentryBinding.inflate(layoutInflater)
         setContentView(binding.root)
         var edit = false
+        registerMapCallback()
+        registerImagePickerCallback()
+
+        //setup image picker
+        binding.setMoodImage.setOnClickListener {
+            showImagePicker(imageIntentLauncher)
+        }
+
 
         app = application as MainApp
         i("Add Mood activity started")
-        registerMapCallback()
         // set text for initial date
         binding.dateText.text = selectedDate.toString()
         binding.dateText.setOnClickListener {
@@ -142,7 +151,22 @@ class AddMoodActivity : AppCompatActivity() {
     }
 
 
-//toolbar back button
+    private fun registerImagePickerCallback() {
+        imageIntentLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult())
+            { result ->
+                when(result.resultCode){
+                    RESULT_OK -> {
+                        if (result.data != null) {
+                            i("Got Result ${result.data!!.data}")
+                        } // end of if
+                    }
+                    RESULT_CANCELED -> { } else -> { }
+                }
+            }
+    }
+
+    //toolbar back button
 override fun onOptionsItemSelected(item: MenuItem): Boolean {
     when (item.itemId) {
         android.R.id.home -> {

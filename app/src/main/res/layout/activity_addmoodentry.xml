@@ -129,6 +129,8 @@
                   android:textSize="20sp"
                 android:text="@string/date_selectDate" />
 
+
+
                 <Button
                     android:id="@+id/moodLocation"
                     android:layout_width="match_parent"
@@ -138,7 +140,27 @@
                     android:padding="8dp"
                     android:textSize="20sp"
                     android:text="@string/button_location" >
-              </Button>
+                </Button>
+
+
+                <Button
+                    android:id="@+id/setMoodImage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:backgroundTint="@color/colorButton"
+                    android:padding="8dp"
+                    android:textSize="20sp"
+                    android:text="@string/button_addImage" >
+                </Button>
+                <ImageView
+                    android:id="@+id/moodImage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:importantForAccessibility="no"
+                    app:srcCompat="@mipmap/ic_launcher"
+                    tools:ignore="ImageContrastCheck" />
+
 
                 <Button
                     android:id="@+id/btnAdd"
