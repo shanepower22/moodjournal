@@ -76,10 +76,19 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback,  GoogleMap.OnMarker
         map.addMarker(options)
         map.setOnMarkerDragListener(this)
         locationHelper.init() { userLocation ->
-            map.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 15f))
+            if (locationHelper.hasLocationPermission()) {
+                map.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 15f))
+                enableMyLocationLayer()
+            }
         }
-            //        map.moveCamera(CameraUpdateFactory.newLatLngZoom(loc, location.zoom))
     }
+
+    @SuppressLint("MissingPermission")
+    private fun enableMyLocationLayer() {
+        map.isMyLocationEnabled = true
+        map.uiSettings.isMyLocationButtonEnabled = true
+    }
+
 
     override fun onMarkerDrag(p0: Marker) {
     }
