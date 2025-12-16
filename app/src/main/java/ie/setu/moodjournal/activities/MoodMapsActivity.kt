@@ -1,8 +1,11 @@
 package ie.setu.moodjournal.activities
 
+import android.annotation.SuppressLint
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.os.Bundle
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.DrawableRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -19,6 +22,7 @@ import ie.setu.moodjournal.main.MainApp
 import androidx.core.graphics.createBitmap
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import ie.setu.moodjournal.R
+import ie.setu.moodjournal.helpers.LocationHelper
 
 class MoodMapsActivity : AppCompatActivity(), GoogleMap.OnMarkerClickListener {
 
@@ -26,6 +30,9 @@ class MoodMapsActivity : AppCompatActivity(), GoogleMap.OnMarkerClickListener {
     private lateinit var contentBinding: ContentMoodMapBinding
     lateinit var app: MainApp
     lateinit var map: GoogleMap
+    private lateinit var locationHelper: LocationHelper
+    private lateinit var locationPermissionLauncher: ActivityResultLauncher<Array<String>>
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,6 +40,14 @@ class MoodMapsActivity : AppCompatActivity(), GoogleMap.OnMarkerClickListener {
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
         app = application as MainApp
+
+        //setup user location
+        locationPermissionLauncher = registerForActivityResult(
+            ActivityResultContracts.RequestMultiplePermissions()
+        ) { permissions ->
+            locationHelper.onPermissionResult(permissions)
+        }
+        locationHelper = LocationHelper(this, locationPermissionLauncher)
 
         contentBinding = binding.include
         contentBinding.mapView.onCreate(savedInstanceState)
@@ -66,10 +81,22 @@ class MoodMapsActivity : AppCompatActivity(), GoogleMap.OnMarkerClickListener {
                     )
                 )
             map.addMarker(options)?.tag = it.id
-            map.moveCamera(CameraUpdateFactory.newLatLngZoom(loc, it.zoom))
             map.setOnMarkerClickListener(this)
 
         }
+        locationHelper.init() { userLocation ->
+            if (locationHelper.hasLocationPermission()) {
+                map.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 15f))
+                enableMyLocationLayer()
+            }
+        }
+    }
+
+    //enables blue location dot and reset to my location button
+    @SuppressLint("MissingPermission")
+    private fun enableMyLocationLayer() {
+        map.isMyLocationEnabled = true
+        map.uiSettings.isMyLocationButtonEnabled = true
     }
 
     override fun onDestroy() {

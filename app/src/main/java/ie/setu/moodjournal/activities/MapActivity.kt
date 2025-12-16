@@ -83,6 +83,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback,  GoogleMap.OnMarker
         }
     }
 
+    //enables blue location dot and reset to my location button
     @SuppressLint("MissingPermission")
     private fun enableMyLocationLayer() {
         map.isMyLocationEnabled = true
