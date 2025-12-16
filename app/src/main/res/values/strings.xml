@@ -19,4 +19,5 @@
     <!--    String placeholder for mood-->
     <string name="moodColorLabel">Feeling %1$s</string>
     <string name="title_activity_map">Map of Mood Entries</string>
+    <string name="map_content_default">Select a mood pinpoint to view details</string>
 </resources>

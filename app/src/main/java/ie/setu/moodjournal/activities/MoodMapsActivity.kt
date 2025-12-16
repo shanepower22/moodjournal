@@ -1,15 +1,24 @@
 package ie.setu.moodjournal.activities
 
+import android.graphics.Bitmap
+import android.graphics.Canvas
 import android.os.Bundle
+import androidx.annotation.DrawableRes
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.DrawableCompat
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import ie.setu.moodjournal.databinding.ActivityMoodMapBinding
 import ie.setu.moodjournal.databinding.ContentMoodMapBinding
 import ie.setu.moodjournal.main.MainApp
+import androidx.core.graphics.createBitmap
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
+import ie.setu.moodjournal.R
 
 class MoodMapsActivity : AppCompatActivity(), GoogleMap.OnMarkerClickListener {
 
@@ -47,7 +56,15 @@ class MoodMapsActivity : AppCompatActivity(), GoogleMap.OnMarkerClickListener {
         map.uiSettings.isZoomControlsEnabled = true
         app.moodEntries.findAll().forEach {
             val loc = LatLng(it.lat, it.lng)
-            val options = MarkerOptions().title(it.moodLabel).position(loc)
+            val options = MarkerOptions()
+                .title(it.moodLabel)
+                .position(loc)
+                .icon(
+                    getTintedMarker(
+                        R.drawable.baseline_location_on_24,
+                        it.moodColor
+                    )
+                )
             map.addMarker(options)?.tag = it.id
             map.moveCamera(CameraUpdateFactory.newLatLngZoom(loc, it.zoom))
             map.setOnMarkerClickListener(this)
@@ -78,5 +95,24 @@ class MoodMapsActivity : AppCompatActivity(), GoogleMap.OnMarkerClickListener {
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         contentBinding.mapView.onSaveInstanceState(outState)
+    }
+
+    // AI generated helper function to get tinted marker
+    private fun getTintedMarker(
+        @DrawableRes drawableId: Int,
+        color: Int
+
+    ): BitmapDescriptor {
+
+        val drawable = ContextCompat.getDrawable(this, drawableId)!!
+        DrawableCompat.setTint(drawable, color)
+
+        val bitmap = createBitmap(drawable.intrinsicWidth, drawable.intrinsicHeight)
+
+        val canvas = Canvas(bitmap)
+        drawable.setBounds(0, 0, canvas.width, canvas.height)
+        drawable.draw(canvas)
+
+        return BitmapDescriptorFactory.fromBitmap(bitmap)
     }
 }
