@@ -12,9 +12,12 @@
     <string name="mood_not_selected">Please select your mood</string>
     <string name="mood_duplicated_date">Mood was already added for this date!</string>
     <string name="mood_future_date">Cannot add a mood in the future!</string>
+    <string name="button_location">Set Location</string>
 
 
     <string name="mood_filter">Mood Filter</string>
-<!--    String placeholder for mood-->
+    <!--    String placeholder for mood-->
     <string name="moodColorLabel">Feeling %1$s</string>
+    <string name="title_activity_map">Map of Mood Entries</string>
+    <string name="map_content_default">Select a mood pinpoint to view details</string>
 </resources>

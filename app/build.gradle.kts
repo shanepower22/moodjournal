@@ -4,6 +4,7 @@
     id("kotlin-parcelize")
     id("kotlinx-serialization")
         kotlin("plugin.serialization")
+        alias(libs.plugins.google.android.libraries.mapsplatform.secrets.gradle.plugin)
     }
 
 android {
@@ -50,6 +51,11 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
     implementation(libs.timber)
     implementation(libs.filament.android)
+    implementation(libs.play.services.maps)
+    implementation(libs.androidx.navigation.fragment.ktx)
+    implementation(libs.androidx.navigation.ui.ktx)
+    implementation(libs.androidx.cardview)
+    implementation(libs.play.services.location)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

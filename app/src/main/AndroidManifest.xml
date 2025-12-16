@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+    <!-- Precise location access. -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
 
     <application
         android:name=".main.MainApp"
@@ -13,6 +18,19 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MoodJournal">
         <activity
+            android:name=".activities.MoodMapsActivity"
+            android:exported="false"
+            android:theme="@style/Theme.MoodJournal" />
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/MAPS_API_KEY" />
+
+        <activity
+            android:name=".activities.MapActivity"
+            android:exported="false"
+            android:label="@string/title_activity_map" />
+        <activity
             android:name=".activities.MoodListActivity"
             android:exported="true">
             <intent-filter>
@@ -23,9 +41,7 @@
         </activity>
         <activity
             android:name=".activities.AddMoodActivity"
-            android:exported="true">
-
-        </activity>
+            android:exported="true" />
     </application>
 
 </manifest>

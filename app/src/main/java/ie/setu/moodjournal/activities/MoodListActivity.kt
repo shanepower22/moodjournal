@@ -8,7 +8,6 @@
     import android.view.Menu
     import android.view.MenuItem
     import android.view.View
-    import android.widget.AdapterView
     import android.widget.PopupMenu
     import androidx.activity.result.contract.ActivityResultContracts
     import androidx.appcompat.app.AppCompatActivity
@@ -31,6 +30,10 @@
 
         private lateinit var allMoods: List<MoodEntryModel>
 
+        private val mapIntentLauncher =
+            registerForActivityResult(
+                ActivityResultContracts.StartActivityForResult()
+            )    { }
         private var currentFilter: String = "All" // keep track of current filter applied
 
 
@@ -63,6 +66,10 @@
                     val intent = Intent(this, AddMoodActivity::class.java)
                     moodResultLaunch.launch(intent)
                     i("Add / edit mood button pressed")
+                }
+                R.id.item_map -> {
+                    val launcherIntent = Intent(this, MoodMapsActivity::class.java)
+                    mapIntentLauncher.launch(launcherIntent)
                 }
 
                 R.id.item_filter -> {

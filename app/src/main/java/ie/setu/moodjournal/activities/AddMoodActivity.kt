@@ -1,16 +1,22 @@
 package ie.setu.moodjournal.activities
 
+import android.app.Activity
 import android.app.DatePickerDialog
+import android.content.Intent
 import android.icu.util.Calendar
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import android.view.View
+import androidx.activity.addCallback
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import com.google.android.material.snackbar.Snackbar
 import ie.setu.moodjournal.R
 import ie.setu.moodjournal.databinding.ActivityAddmoodentryBinding
 import ie.setu.moodjournal.main.MainApp
+import ie.setu.moodjournal.models.Location
 import ie.setu.moodjournal.models.MoodEntryModel
 import timber.log.Timber.i
 import java.time.LocalDate
@@ -18,11 +24,33 @@ import java.time.LocalDate
 class AddMoodActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAddmoodentryBinding
     private lateinit var app: MainApp
+    private lateinit var mapIntentLauncher : ActivityResultLauncher<Intent>
+    private fun registerMapCallback() {
+        mapIntentLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult())
+            { result ->
+                when (result.resultCode) {
+                    RESULT_OK -> {
+                        if (result.data != null) {
+                            i("Got Location ${result.data.toString()}")
+                            //location = result.data!!.extras?.getParcelable("location",Location::class.java)!!
+                            location = result.data!!.extras?.getParcelable("location")!!
+                            i("Location == $location")
+                        } // end of if
+                    }
+                    RESULT_CANCELED -> { } else -> { }
+                }
+            }
+    }
+
+    var location = Location(52.245696, -7.139102, 15f)
+
     var moodEntry = MoodEntryModel()
 
     private var selectedDate: LocalDate = LocalDate.now()
     private var selectedColor: Int = 0
     private var selectedLabel: String = ""
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,6 +60,7 @@ class AddMoodActivity : AppCompatActivity() {
 
         app = application as MainApp
         i("Add Mood activity started")
+        registerMapCallback()
         // set text for initial date
         binding.dateText.text = selectedDate.toString()
         binding.dateText.setOnClickListener {
@@ -43,6 +72,7 @@ class AddMoodActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
 
+
         //check if editing and populate the fields if so
         if (intent.hasExtra("mood_edit")) {
             edit = true
@@ -53,7 +83,17 @@ class AddMoodActivity : AppCompatActivity() {
             selectedDate = moodEntry.date
             selectedColor = moodEntry.moodColor
             selectedLabel = moodEntry.moodLabel
+            location = Location(moodEntry.lat, moodEntry.lng, moodEntry.zoom)
 
+
+        }
+
+        //when set location pressed
+        binding.moodLocation.setOnClickListener {
+            i("Set Location Pressed")
+            val launcherIntent = Intent(this, MapActivity::class.java)
+                .putExtra("location", location)
+            mapIntentLauncher.launch(launcherIntent)
         }
 
         //when add or edit button pressed
@@ -62,6 +102,10 @@ class AddMoodActivity : AppCompatActivity() {
             moodEntry.moodColor = selectedColor
             moodEntry.moodLabel = selectedLabel
             moodEntry.date = selectedDate
+            moodEntry.lat = location.lat
+            moodEntry.lng = location.lng
+            moodEntry.zoom = location.zoom
+
 
             if (selectedDate > LocalDate.now()) {
                 Snackbar.make(it, R.string.mood_future_date, Snackbar.LENGTH_LONG).show()
