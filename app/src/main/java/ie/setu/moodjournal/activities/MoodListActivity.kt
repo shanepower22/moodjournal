@@ -10,10 +10,13 @@
     import android.view.View
     import android.widget.PopupMenu
     import androidx.activity.result.contract.ActivityResultContracts
+    import androidx.appcompat.app.ActionBarDrawerToggle
     import androidx.appcompat.app.AppCompatActivity
     import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+    import androidx.drawerlayout.widget.DrawerLayout
 
     import androidx.recyclerview.widget.LinearLayoutManager
+    import com.google.android.material.navigation.NavigationView
     import ie.setu.moodjournal.R
     import ie.setu.moodjournal.main.MainApp
     import ie.setu.moodjournal.databinding.ActivityMoodListBinding
@@ -33,7 +36,9 @@
         private lateinit var store: MoodFirestoreStore
 
         private lateinit var allMoods: List<MoodEntryModel>
-
+        private lateinit var drawerToggle: ActionBarDrawerToggle
+        private lateinit var drawerLayout: DrawerLayout
+        private lateinit var navView: NavigationView
         private val mapIntentLauncher =
             registerForActivityResult(
                 ActivityResultContracts.StartActivityForResult()
@@ -51,6 +56,37 @@
             app = application as MainApp
             store = app.moodEntries
 
+            // setup drawer and toolbar
+            drawerLayout = binding.drawerLayout
+            navView = binding.navView
+            setSupportActionBar(binding.toolbarAdd)
+            drawerToggle = ActionBarDrawerToggle(
+                this, drawerLayout, binding.toolbarAdd,
+                R.string.nav_drawer_open, R.string.nav_drawer_close
+            )
+            drawerLayout.addDrawerListener(drawerToggle)
+            drawerToggle.syncState()
+
+            // Handle nav item clicks
+            navView.setNavigationItemSelectedListener { menuItem ->
+                when (menuItem.itemId) {
+                    R.id.nav_mood_list -> {
+                        drawerLayout.closeDrawers()
+                    }
+                    R.id.nav_map -> {
+                        val intent = Intent(this, MoodMapsActivity::class.java)
+                        mapIntentLauncher.launch(intent)
+                        drawerLayout.closeDrawers()
+                    }
+                }
+                true
+            }
+
+            // Floating action button
+            binding.fabAddMood.setOnClickListener {
+                val intent = Intent(this, AddMoodActivity::class.java)
+                moodResultLaunch.launch(intent)
+            }
             // recycler view
             val layoutManager = LinearLayoutManager(this)
             binding.recyclerView.layoutManager = layoutManager
@@ -62,7 +98,8 @@
                 runOnUiThread {
                     adapter.updateList(allMoods)
                 }
-            }        }
+            }
+        }
 
         //toolbar menu
         override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -73,15 +110,15 @@
         //toolbar menu options
         override fun onOptionsItemSelected(item: MenuItem): Boolean {
             when (item.itemId) {
-                R.id.item_add -> {
-                    val intent = Intent(this, AddMoodActivity::class.java)
-                    moodResultLaunch.launch(intent)
-                    i("Add / edit mood button pressed")
-                }
-                R.id.item_map -> {
-                    val launcherIntent = Intent(this, MoodMapsActivity::class.java)
-                    mapIntentLauncher.launch(launcherIntent)
-                }
+//                R.id.item_add -> {
+//                    val intent = Intent(this, AddMoodActivity::class.java)
+//                    moodResultLaunch.launch(intent)
+//                    i("Add / edit mood button pressed")
+//                }
+//                R.id.item_map -> {
+//                    val launcherIntent = Intent(this, MoodMapsActivity::class.java)
+//                    mapIntentLauncher.launch(launcherIntent)
+//                }
 
                 R.id.item_filter -> {
                     showFilterPopup(findViewById(R.id.item_filter))

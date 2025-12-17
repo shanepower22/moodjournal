@@ -26,5 +26,10 @@
     <string name="mood_map_image">Mood image on mapview</string>
 
     <string name="select_mood_image">Select mood image</string>
-
+    <string name="nav_drawer_open">Open navigation drawer</string>
+    <string name="nav_drawer_close">Close navigation drawer</string>
+    <string name="nav_icon">Nav icon</string>
+    <string name="nav_list_view">List View</string>
+    <string name="nav_map_view">Map View</string>
+"
 </resources>

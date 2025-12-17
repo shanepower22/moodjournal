@@ -8,17 +8,9 @@
         android:title="@string/mood_filter"
         app:showAsAction="always" />
 
-    <item
-        android:id="@+id/item_add"
-        android:icon="@drawable/baseline_note_add_24"
-        android:title="@string/menu_addMoodEntry"
-        app:showAsAction="always" />
 
-    <item
-        android:id="@+id/item_map"
-        android:icon="@android:drawable/ic_menu_mapmode"
-        android:title="@string/menu_addMoodEntry"
-        app:showAsAction="always"/>
+
+
 </menu>
 
 

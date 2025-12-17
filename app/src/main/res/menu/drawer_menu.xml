@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/nav_mood_list"
+        android:icon="@android:drawable/ic_menu_info_details"
+        android:title="@string/nav_list_view">
+
+    </item>
+    <item
+        android:id="@+id/nav_map"
+        android:icon="@android:drawable/ic_menu_mapmode"
+        android:title="@string/nav_map_view">
+    </item>
+</menu>

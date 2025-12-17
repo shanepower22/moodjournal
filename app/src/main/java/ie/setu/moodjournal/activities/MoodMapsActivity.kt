@@ -1,12 +1,14 @@
 package ie.setu.moodjournal.activities
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.os.Bundle
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.DrawableRes
+import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
@@ -20,7 +22,9 @@ import ie.setu.moodjournal.databinding.ActivityMoodMapBinding
 import ie.setu.moodjournal.databinding.ContentMoodMapBinding
 import ie.setu.moodjournal.main.MainApp
 import androidx.core.graphics.createBitmap
+import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
+import com.google.android.material.navigation.NavigationView
 import com.squareup.picasso.Picasso
 import ie.setu.moodjournal.R
 import ie.setu.moodjournal.helpers.LocationHelper
@@ -34,6 +38,9 @@ class MoodMapsActivity : AppCompatActivity(), GoogleMap.OnMarkerClickListener {
     private lateinit var locationHelper: LocationHelper
     private lateinit var locationPermissionLauncher: ActivityResultLauncher<Array<String>>
 
+    private lateinit var drawerToggle: ActionBarDrawerToggle
+    private lateinit var drawerLayout: DrawerLayout
+    private lateinit var navView: NavigationView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,6 +63,33 @@ class MoodMapsActivity : AppCompatActivity(), GoogleMap.OnMarkerClickListener {
             map = it
             configureMap()
         }
+        drawerLayout = binding.drawerLayout
+        navView = binding.navView
+        // Setup DrawerToggle
+        drawerToggle = ActionBarDrawerToggle(
+            this,
+            drawerLayout,
+            binding.toolbar,
+            R.string.nav_drawer_open,
+            R.string.nav_drawer_close
+        )
+        drawerLayout.addDrawerListener(drawerToggle)
+        drawerToggle.syncState()
+
+        // Handle nav item clicks
+        navView.setNavigationItemSelectedListener { menuItem ->
+            when(menuItem.itemId) {
+                R.id.nav_mood_list -> {
+                    val intent = Intent(this, MoodListActivity::class.java)
+                    startActivity(intent)
+                    drawerLayout.closeDrawers()
+                }
+                R.id.nav_map -> drawerLayout.closeDrawers() // already here
+            }
+            true
+        }
+
+
     }
 
     override fun onMarkerClick(marker: Marker): Boolean {
