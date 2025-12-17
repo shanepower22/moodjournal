@@ -11,6 +11,7 @@
     import android.widget.PopupMenu
     import androidx.activity.result.contract.ActivityResultContracts
     import androidx.appcompat.app.ActionBarDrawerToggle
+    import androidx.appcompat.app.AlertDialog
     import androidx.appcompat.app.AppCompatActivity
     import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
     import androidx.drawerlayout.widget.DrawerLayout
@@ -110,16 +111,26 @@
         //toolbar menu options
         override fun onOptionsItemSelected(item: MenuItem): Boolean {
             when (item.itemId) {
-//                R.id.item_add -> {
-//                    val intent = Intent(this, AddMoodActivity::class.java)
-//                    moodResultLaunch.launch(intent)
-//                    i("Add / edit mood button pressed")
-//                }
-//                R.id.item_map -> {
-//                    val launcherIntent = Intent(this, MoodMapsActivity::class.java)
-//                    mapIntentLauncher.launch(launcherIntent)
-//                }
 
+                R.id.item_delete_all -> {
+                    AlertDialog.Builder(this)
+                        .setTitle("Delete All Moods")
+                        .setMessage("Are you sure you want to delete all mood entries?")
+                        .setPositiveButton("Yes") { dialog, _ ->
+                            // clear all entries
+                            val moodsCopy = ArrayList(app.moodEntries.findAll()) // use copy to avoid crash
+                            moodsCopy.forEach { app.moodEntries.delete(it) }
+                            allMoods = emptyList()
+                            adapter.updateList(allMoods)
+                            currentFilter = "All"
+                            dialog.dismiss()
+                        }
+                        .setNegativeButton("Cancel") { dialog, _ ->
+                            dialog.dismiss()
+                        }
+                        .create()
+                        .show()
+                }
                 R.id.item_filter -> {
                     showFilterPopup(findViewById(R.id.item_filter))
                     i("Filter button pressed")
@@ -150,11 +161,22 @@
         }
 
         override fun onDeleteClick(mood: MoodEntryModel) {
-            app.moodEntries.delete(mood)
-            allMoods = app.moodEntries.findAll()
-            adapter.updateList(allMoods)
-            filterMoods(currentFilter)
-            i("Deleted mood ${mood}")
+            AlertDialog.Builder(this)
+                .setTitle("Delete Mood")
+                .setMessage("Are you sure you want to delete this mood?")
+                .setPositiveButton("Yes") { dialog, _ ->
+                    app.moodEntries.delete(mood)
+                    allMoods = app.moodEntries.findAll()
+                    adapter.updateList(allMoods)
+                    filterMoods(currentFilter)
+                    i("Deleted mood ${mood}")
+
+                }
+                .setNegativeButton("Cancel") { dialog, _ ->
+                    dialog.dismiss()
+                }
+                .create()
+                .show()
         }
 
 
