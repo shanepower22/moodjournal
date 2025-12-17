@@ -14,22 +14,22 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="120dp"
+        android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:padding="12dp"
-        android:gravity="center_vertical">
+        android:padding="12dp">
 
         <View
             android:id="@+id/moodColorIndicator"
             android:layout_width="16dp"
             android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
             android:layout_marginEnd="12dp"
             android:background="@color/neutral"
-            android:layout_gravity="center_vertical"
             android:shape="rectangle" />
 
         <LinearLayout
-            android:layout_width="0dp"
+            android:layout_width="232dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:orientation="vertical">
@@ -38,31 +38,40 @@
                 android:id="@+id/moodNotes"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/colorPrimaryDark"
                 android:textSize="20sp"
                 android:textStyle="bold"
-                android:textColor="@color/colorPrimaryDark"
                 tools:text="Great day today" />
 
             <TextView
                 android:id="@+id/moodLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/colorPrimaryDark"
                 android:textSize="12sp"
                 android:textStyle="italic"
-                android:textColor="@color/colorPrimaryDark"
                 tools:text="Feeling grateful" />
 
             <TextView
                 android:id="@+id/moodDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="14sp"
-                android:textColor="@color/grey"
                 android:layout_marginTop="4dp"
+                android:textColor="@color/grey"
+                android:textSize="14sp"
                 tools:text="2025-10-23" />
 
         </LinearLayout>
 
+        <ImageView
+            android:id="@+id/moodImage"
+            android:layout_width="64dp"
+            android:layout_height="69dp"
+            android:layout_marginEnd="8dp"
+            android:contentDescription="@string/mood_card_image"
+            android:scaleType="centerCrop">
+
+        </ImageView>
         <ImageButton
             android:id="@+id/moodOptionsMenu"
             android:layout_width="wrap_content"

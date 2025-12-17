@@ -1,11 +1,13 @@
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.RecyclerView
+import com.squareup.picasso.Picasso
 import ie.setu.moodjournal.R
 import ie.setu.moodjournal.databinding.CardMoodBinding
 import ie.setu.moodjournal.models.MoodEntryModel
-
+import androidx.core.net.toUri
 
 
 interface MoodDropdownListener { //AI was used here to help implement the popup menu functionality
@@ -48,6 +50,12 @@ class MoodAdapter (private var moodEntries: MutableList<MoodEntryModel>,
             binding.moodColorIndicator.setBackgroundColor(mood.moodColor)
             binding.moodNotes.text = mood.notes
             binding.moodDate.text = mood.date.toString()
+            if (!mood.imageUri.isNullOrEmpty()) {
+                Picasso.get()
+                    .load(mood.imageUri!!.toUri())
+                    .into(binding.moodImage)
+            }
+
 
             //AI was used here to help implement the popup menu functionality
             binding.moodOptionsMenu.setOnClickListener { view ->

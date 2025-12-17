@@ -22,6 +22,8 @@
     <string name="map_content_default">Select a mood pinpoint to view details</string>
     <string name="button_addImage"> Add Image </string>
     <string name="button_editImage">Edit Image</string>
+    <string name="mood_card_image">Mood image on moodcard</string>
+    <string name="mood_map_image">Mood image on mapview</string>
 
     <string name="select_mood_image">Select mood image</string>
 

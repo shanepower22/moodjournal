@@ -40,13 +40,13 @@
                 android:id="@+id/currentDate"
                 android:layout_width="145dp"
                 android:layout_height="30dp"
-                android:layout_marginStart="16dp"
+                android:layout_marginStart="12dp"
                 android:layout_marginTop="53dp"
                 android:textColor="@color/black"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/currentDescription"
-                app:layout_constraintVertical_bias="0.884" />
+                app:layout_constraintVertical_bias="0.761" />
 
             <TextView
                 android:id="@+id/currentDescription"
@@ -59,6 +59,18 @@
                 app:layout_constraintTop_toBottomOf="@+id/currentTitle"
                 app:layout_constraintVertical_bias="0.246" />
 
+            <ImageView
+                android:id="@+id/moodImage"
+                android:layout_width="155dp"
+                android:layout_height="147dp"
+                android:layout_marginStart="36dp"
+                android:layout_marginTop="68dp"
+                android:contentDescription="@string/mood_map_image"
+                android:scaleType="centerCrop"
+                app:layout_constraintStart_toEndOf="@+id/currentDescription"
+                app:layout_constraintTop_toTopOf="parent">
+
+            </ImageView>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>

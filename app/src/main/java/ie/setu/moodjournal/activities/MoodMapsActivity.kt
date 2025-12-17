@@ -21,6 +21,7 @@ import ie.setu.moodjournal.databinding.ContentMoodMapBinding
 import ie.setu.moodjournal.main.MainApp
 import androidx.core.graphics.createBitmap
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
+import com.squareup.picasso.Picasso
 import ie.setu.moodjournal.R
 import ie.setu.moodjournal.helpers.LocationHelper
 
@@ -63,7 +64,7 @@ class MoodMapsActivity : AppCompatActivity(), GoogleMap.OnMarkerClickListener {
         contentBinding.currentTitle.text = moodEntry!!.moodLabel
         contentBinding.currentDescription.text = moodEntry.notes
         contentBinding.currentDate.text = moodEntry.date.toString()
-//        Picasso.get().load(placemark.image).into(contentBinding.currentImage)
+        Picasso.get().load(moodEntry.imageUri).into(contentBinding.moodImage)
         return false
     }
 
