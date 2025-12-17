@@ -11,6 +11,7 @@
     import android.widget.PopupMenu
     import androidx.activity.result.contract.ActivityResultContracts
     import androidx.appcompat.app.AppCompatActivity
+    import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 
     import androidx.recyclerview.widget.LinearLayoutManager
     import ie.setu.moodjournal.R
@@ -41,6 +42,7 @@
 
 
         override fun onCreate(savedInstanceState: Bundle?) {
+            installSplashScreen()
             super.onCreate(savedInstanceState)
             binding = ActivityMoodListBinding.inflate(layoutInflater)
             setContentView(binding.root)

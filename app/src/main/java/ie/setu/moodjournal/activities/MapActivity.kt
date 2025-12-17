@@ -67,19 +67,25 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback,  GoogleMap.OnMarker
 
     override fun onMapReady(googleMap: GoogleMap) {
         map = googleMap
-        val loc = LatLng(location.lat, location.lng)
-        val options = MarkerOptions()
-            .title("Mood Location")
-            .snippet("GPS : $loc")
-            .draggable(true)
-            .position(loc)
-        map.addMarker(options)
         map.setOnMarkerDragListener(this)
-        locationHelper.init() { userLocation ->
-            if (locationHelper.hasLocationPermission()) {
-                map.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 15f))
-                enableMyLocationLayer()
-            }
+
+        locationHelper.init { userLocation ->
+            location.lat = userLocation.latitude
+            location.lng = userLocation.longitude
+            location.zoom = 15f
+
+            val loc = LatLng(location.lat, location.lng)
+
+            val options = MarkerOptions()
+                .title("Mood Location")
+                .snippet("GPS : $loc")
+                .draggable(true)
+                .position(loc)
+
+            map.addMarker(options)
+            map.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 15f))
+            enableMyLocationLayer()
+
         }
     }
 
