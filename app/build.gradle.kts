@@ -5,6 +5,7 @@
     id("kotlinx-serialization")
         kotlin("plugin.serialization")
         alias(libs.plugins.google.android.libraries.mapsplatform.secrets.gradle.plugin)
+        id("com.google.gms.google-services")
     }
 
 android {
@@ -61,5 +62,7 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
     implementation(libs.picasso)
-
+    implementation(platform("com.google.firebase:firebase-bom:34.7.0"))
+    implementation("com.google.firebase:firebase-analytics")
+    implementation("com.google.firebase:firebase-firestore")
 }

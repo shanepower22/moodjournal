@@ -17,6 +17,7 @@
     import ie.setu.moodjournal.main.MainApp
     import ie.setu.moodjournal.databinding.ActivityMoodListBinding
     import ie.setu.moodjournal.models.MoodEntryModel
+    import ie.setu.moodjournal.models.MoodFirestoreStore
     import timber.log.Timber.i
 
     class MoodListActivity : AppCompatActivity(), MoodDropdownListener {
@@ -27,6 +28,8 @@
         private lateinit var binding: ActivityMoodListBinding
 
         private lateinit var adapter: MoodAdapter
+
+        private lateinit var store: MoodFirestoreStore
 
         private lateinit var allMoods: List<MoodEntryModel>
 
@@ -44,6 +47,7 @@
             binding.toolbarAdd.title = title
             setSupportActionBar(binding.toolbarAdd)
             app = application as MainApp
+            store = app.moodEntries
 
             // recycler view
             val layoutManager = LinearLayoutManager(this)
@@ -97,7 +101,7 @@
 
         override fun onEditClick(mood: MoodEntryModel) {
             val intent = Intent(this, AddMoodActivity::class.java)
-            intent.putExtra("mood_edit", mood)
+            intent.putExtra("mood_id", mood.id)
             moodResultLaunch.launch(intent)
         }
 

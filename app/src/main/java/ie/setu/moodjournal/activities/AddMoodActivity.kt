@@ -1,16 +1,13 @@
 package ie.setu.moodjournal.activities
 
-import android.app.Activity
 import android.app.DatePickerDialog
 import android.content.Intent
 import android.icu.util.Calendar
-import android.net.Uri
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import android.view.View
-import androidx.activity.addCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import com.google.android.material.snackbar.Snackbar
@@ -54,14 +51,13 @@ class AddMoodActivity : AppCompatActivity() {
     private var selectedDate: LocalDate = LocalDate.now()
     private var selectedColor: Int = 0
     private var selectedLabel: String = ""
-
+    private var edit = false
     private lateinit var imageIntentLauncher : ActivityResultLauncher<Intent>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAddmoodentryBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        var edit = false
         registerMapCallback()
         registerImagePickerCallback()
 
@@ -86,21 +82,25 @@ class AddMoodActivity : AppCompatActivity() {
 
 
         //check if editing and populate the fields if so
-        if (intent.hasExtra("mood_edit")) {
+        val moodId = intent.extras?.getLong("mood_id")
+        if (moodId != null) {
             edit = true
-            moodEntry = intent.extras?.getParcelable("mood_edit")!!
-            binding.moodNotes.setText(moodEntry.notes)
-            binding.dateText.setText(moodEntry.date.toString())
-            binding.setMoodImage.setText(R.string.button_editImage)
-            binding.btnAdd.setText(R.string.menu_moodEdit)
-            Picasso.get()
-                .load(moodEntry.imageUri?.toUri())
-                .into(binding.moodImage)
-            selectedDate = moodEntry.date
-            selectedColor = moodEntry.moodColor
-            selectedLabel = moodEntry.moodLabel
-            location = Location(moodEntry.lat, moodEntry.lng, moodEntry.zoom)
-
+            app.moodEntries.findById(moodId) { mood ->
+                if (mood != null) {
+                    moodEntry = mood
+                    binding.moodNotes.setText(moodEntry.notes)
+                    binding.dateText.setText(moodEntry.date)
+                    binding.setMoodImage.setText(R.string.button_editImage)
+                    binding.btnAdd.setText(R.string.menu_moodEdit)
+                    Picasso.get()
+                        .load(moodEntry.imageUri?.toUri())
+                        .into(binding.moodImage)
+                    selectedDate = LocalDate.parse(moodEntry.date)
+                    selectedColor = moodEntry.moodColor
+                    selectedLabel = moodEntry.moodLabel
+                    location = Location(moodEntry.lat, moodEntry.lng, moodEntry.zoom)
+                }
+        }
 
         }
 
@@ -117,7 +117,7 @@ class AddMoodActivity : AppCompatActivity() {
             moodEntry.notes = binding.moodNotes.text.toString()
             moodEntry.moodColor = selectedColor
             moodEntry.moodLabel = selectedLabel
-            moodEntry.date = selectedDate
+            moodEntry.date = selectedDate.toString()
             moodEntry.lat = location.lat
             moodEntry.lng = location.lng
             moodEntry.zoom = location.zoom
@@ -141,7 +141,7 @@ class AddMoodActivity : AppCompatActivity() {
                 } else {
                     val duplicate =
                         app.moodEntries.findAll()
-                            .find { moodEntry -> moodEntry.date == selectedDate }
+                            .find { moodEntry -> moodEntry.date == selectedDate.toString() }
                     if (duplicate != null) {
                         Snackbar.make(it, R.string.mood_duplicated_date, Snackbar.LENGTH_LONG)
                             .show()

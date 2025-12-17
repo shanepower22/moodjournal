@@ -9,5 +9,5 @@ interface MoodStore {
 
     fun delete(moodEntry: MoodEntryModel)
 
-    fun findById(id:Long) : MoodEntryModel?
+    fun findById(id: Long?, callback: (MoodEntryModel?) -> Unit)
 }

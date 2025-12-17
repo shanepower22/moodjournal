@@ -7,15 +7,15 @@ import timber.log.Timber
 import timber.log.Timber.i
 import java.time.LocalDate
 import androidx.core.graphics.toColorInt
-import ie.setu.moodjournal.models.MoodMemStore
+import ie.setu.moodjournal.models.MoodFirestoreStore
 
 class MainApp : Application() {
 
-    lateinit var moodEntries: MoodMemStore
+    lateinit var moodEntries: MoodFirestoreStore
 
     override fun onCreate() {
         super.onCreate()
-        moodEntries = MoodMemStore(this)
+        moodEntries = MoodFirestoreStore()
         Timber.plant(Timber.DebugTree())
         i("Mood Entry App started")
 

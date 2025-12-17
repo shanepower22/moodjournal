@@ -60,11 +60,14 @@ class MoodMapsActivity : AppCompatActivity(), GoogleMap.OnMarkerClickListener {
 
     override fun onMarkerClick(marker: Marker): Boolean {
         val tag = marker.tag as Long
-        val moodEntry = app.moodEntries.findById(tag)
-        contentBinding.currentTitle.text = moodEntry!!.moodLabel
-        contentBinding.currentDescription.text = moodEntry.notes
-        contentBinding.currentDate.text = moodEntry.date.toString()
-        Picasso.get().load(moodEntry.imageUri).into(contentBinding.moodImage)
+        app.moodEntries.findById(tag) { mood ->
+
+        contentBinding.currentTitle.text = mood!!.moodLabel
+        contentBinding.currentDescription.text = mood.notes
+        contentBinding.currentDate.text = mood.date.toString()
+        Picasso.get().load(mood.imageUri).into(contentBinding.moodImage)
+        }
+
         return false
     }
 

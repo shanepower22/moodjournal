@@ -1,5 +1,8 @@
 package ie.setu.moodjournal.models
 import android.content.Context
+import com.google.firebase.Firebase
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.firestore
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
@@ -11,17 +14,32 @@ var lastId = 0L
 internal fun getId(): Long {
     return lastId++
 }
-class MoodMemStore(private val context: Context) : MoodStore {
 
-    val moodEntries = ArrayList<MoodEntryModel>()
-    val filename = "moods.json"
 
-    init {
-        load()
-    }
+class MoodFirestoreStore : MoodStore {
+
+    private val db = Firebase.firestore
+    private val moodsRef = db.collection("moods")
+
+    private val moodEntries = ArrayList<MoodEntryModel>()
 
     override fun findAll(): List<MoodEntryModel> {
         return moodEntries
+    }
+
+    fun load(onComplete: () -> Unit) {
+        moodsRef.get()
+            .addOnSuccessListener { result ->
+                moodEntries.clear()
+                for (doc in result) {
+                    val mood = doc.toObject(MoodEntryModel::class.java)
+                    moodEntries.add(mood)
+                }
+                onComplete()
+            }
+            .addOnFailureListener {
+                onComplete()
+            }
     }
 
     override fun create(moodEntry: MoodEntryModel) {
@@ -31,68 +49,47 @@ class MoodMemStore(private val context: Context) : MoodStore {
         if (moodEntries.any { it.date == moodEntry.date }) {
             throw IllegalStateException("Duplicate mood entry for date: ${moodEntry.date}")
         }
-        moodEntry.id = getId()
+        moodEntry.id = System.currentTimeMillis()
+
+        moodsRef.document(moodEntry.id.toString())
+            .set(moodEntry)
+
         moodEntries.add(moodEntry)
-        logAll()
-        save()
     }
 
     override fun update(moodEntry: MoodEntryModel) {
         require(moodEntry.validate()) {
             "Invalid mood entry data: $moodEntry"
         }
+        moodsRef.document(moodEntry.id.toString())
+            .set(moodEntry)
 
-
-        var foundMood: MoodEntryModel? = moodEntries.find { m -> m.id == moodEntry.id }
-        if (foundMood != null) {
-            foundMood.notes = moodEntry.notes
-            foundMood.moodColor = moodEntry.moodColor
-            foundMood.date = moodEntry.date
-            foundMood.moodLabel = moodEntry.moodLabel
-            foundMood.lat = moodEntry.lat
-            foundMood.lng = moodEntry.lng
-            foundMood.zoom = moodEntry.zoom
-            foundMood.imageUri = moodEntry.imageUri
-
-
-            logAll()
-            save()
+        val index = moodEntries.indexOfFirst { it.id == moodEntry.id }
+        if (index != -1) {
+            moodEntries[index] = moodEntry
         }
     }
-
-
 
     override fun delete(moodEntry: MoodEntryModel) {
+        moodsRef.document(moodEntry.id.toString())
+            .delete()
+
         moodEntries.removeIf { it.id == moodEntry.id }
-        i("Deleted mood entry: $moodEntry")
-        logAll()
-        save()
-        }
-
-    override fun findById(id:Long) : MoodEntryModel? {
-        val foundMoodEntry: MoodEntryModel? = moodEntries.find { it.id == id }
-        return foundMoodEntry
     }
 
-    fun logAll() {
-        moodEntries.forEach{ i("$it") }
+    override fun findById(id: Long?, callback: (MoodEntryModel?) -> Unit){
+        moodsRef.document(id.toString())
+            .get()
+            .addOnSuccessListener { doc ->
+                if (doc.exists()) {
+                    callback(doc.toObject(MoodEntryModel::class.java))
+                } else {
+                    callback(null)
+                }
+            }
+            .addOnFailureListener {
+                callback(null)
+            }
     }
 
-    private fun save() {
-        val jsonString = Json.encodeToString(moodEntries)
-        context.openFileOutput(filename, Context.MODE_PRIVATE).use {
-            it.write(jsonString.toByteArray())
-        }
-        i("Moods saved to JSON")
-    }
-
-    private fun load() {
-        val file = File(context.filesDir, filename)
-        if (file.exists()) {
-            val jsonString = file.readText()
-            moodEntries.addAll(Json.decodeFromString(jsonString))
-            lastId = (moodEntries.maxOfOrNull { it.id } ?: 0L) + 1
-            i("Moods loaded from JSON")
-        }
-    }
 }
