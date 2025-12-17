@@ -16,6 +16,9 @@ class MainApp : Application() {
     override fun onCreate() {
         super.onCreate()
         moodEntries = MoodFirestoreStore()
+        (moodEntries as MoodFirestoreStore).load {
+            i("Loaded ${moodEntries.findAll().size} moods")
+        }
         Timber.plant(Timber.DebugTree())
         i("Mood Entry App started")
 

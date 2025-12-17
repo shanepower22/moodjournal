@@ -56,8 +56,13 @@
             binding.recyclerView.layoutManager = layoutManager
             adapter = MoodAdapter(app.moodEntries.findAll().toMutableList(), this)
             binding.recyclerView.adapter = adapter
-            allMoods = app.moodEntries.findAll() // load all moods from memstore
-        }
+
+            store.load { //load from firestore
+                allMoods = store.findAll()
+                runOnUiThread {
+                    adapter.updateList(allMoods)
+                }
+            }        }
 
         //toolbar menu
         override fun onCreateOptionsMenu(menu: Menu): Boolean {
