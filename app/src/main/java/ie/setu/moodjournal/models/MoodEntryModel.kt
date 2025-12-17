@@ -1,5 +1,6 @@
 package ie.setu.moodjournal.models
 
+import android.net.Uri
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 import java.time.LocalDate
@@ -14,6 +15,7 @@ data class MoodEntryModel(
     var lat: Double = 0.0,
     var lng: Double = 0.0,
     var zoom: Float = 0f,
+    var imageUri: String? = null,
     @Serializable(with = LocalDateSerializer::class) //local date not serializable, using custom class
     var date: LocalDate = LocalDate.now() ) : Parcelable {
 

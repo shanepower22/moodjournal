@@ -52,6 +52,7 @@ class MoodMemStore(private val context: Context) : MoodStore {
             foundMood.lat = moodEntry.lat
             foundMood.lng = moodEntry.lng
             foundMood.zoom = moodEntry.zoom
+            foundMood.imageUri = moodEntry.imageUri
 
 
             logAll()

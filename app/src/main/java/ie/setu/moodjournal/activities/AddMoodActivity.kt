@@ -4,6 +4,7 @@ import android.app.Activity
 import android.app.DatePickerDialog
 import android.content.Intent
 import android.icu.util.Calendar
+import android.net.Uri
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
@@ -13,6 +14,7 @@ import androidx.activity.addCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import com.google.android.material.snackbar.Snackbar
+import com.squareup.picasso.Picasso
 import ie.setu.moodjournal.R
 import ie.setu.moodjournal.databinding.ActivityAddmoodentryBinding
 import ie.setu.moodjournal.helpers.showImagePicker
@@ -21,6 +23,7 @@ import ie.setu.moodjournal.models.Location
 import ie.setu.moodjournal.models.MoodEntryModel
 import timber.log.Timber.i
 import java.time.LocalDate
+import androidx.core.net.toUri
 
 class AddMoodActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAddmoodentryBinding
@@ -88,7 +91,11 @@ class AddMoodActivity : AppCompatActivity() {
             moodEntry = intent.extras?.getParcelable("mood_edit")!!
             binding.moodNotes.setText(moodEntry.notes)
             binding.dateText.setText(moodEntry.date.toString())
+            binding.setMoodImage.setText(R.string.button_editImage)
             binding.btnAdd.setText(R.string.menu_moodEdit)
+            Picasso.get()
+                .load(moodEntry.imageUri?.toUri())
+                .into(binding.moodImage)
             selectedDate = moodEntry.date
             selectedColor = moodEntry.moodColor
             selectedLabel = moodEntry.moodLabel
@@ -114,6 +121,7 @@ class AddMoodActivity : AppCompatActivity() {
             moodEntry.lat = location.lat
             moodEntry.lng = location.lng
             moodEntry.zoom = location.zoom
+            moodEntry.imageUri = moodEntry.imageUri
 
 
             if (selectedDate > LocalDate.now()) {
@@ -159,6 +167,11 @@ class AddMoodActivity : AppCompatActivity() {
                     RESULT_OK -> {
                         if (result.data != null) {
                             i("Got Result ${result.data!!.data}")
+                            val uri = result.data!!.data!!
+                            moodEntry.imageUri = uri.toString()
+                            Picasso.get()
+                                .load(uri)
+                                .into(binding.moodImage)
                         } // end of if
                     }
                     RESULT_CANCELED -> { } else -> { }
