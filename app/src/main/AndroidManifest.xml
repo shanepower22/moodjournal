@@ -32,7 +32,9 @@
             android:label="@string/title_activity_map" />
         <activity
             android:name=".activities.MoodListActivity"
-            android:exported="true">
+            android:exported="true"    android:theme="@style/Theme.MoodJournal.Splash">
+            >
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
